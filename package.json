@@ -1,32 +1,24 @@
 {
-  "name": "histoslider-demo",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "d3-array": "^1.2.0",
-    "d3-format": "^1.2.0",
-    "d3-scale": "^1.0.6",
-    "global": "^4.3.2",
-    "histoslider": "^2.0.14",
-    "ramda": "^0.26.1",
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4",
-    "react-scripts": "2.1.8",
-    "styled-components": "^4.1.3"
-  },
+  "name": "histoslider",
+  "version": "0.0.1",
+  "description": "A slider component integrating a histogram, for react.",
+  "main": "index.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "standard"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "keywords": [
+    "react",
+    "d3",
+    "histogram",
+    "slider"
+  ],
+  "repository": "https://github.com/samhogg/histoslider",
+  "author": "Sam Hogg",
+  "license": "MIT",
+  "devDependencies": {
+    "babel": "^5.8.23",
+    "react": "^0.14.0",
+    "react-dom": "^0.14.0",
+    "standard": "^5.3.1"
+  }
 }
