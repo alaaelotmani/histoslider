@@ -33,7 +33,16 @@ class App extends Component {
     const updatedSelection = histoSliderData;
 
     updatedSelection.forEach(element => {
-      if (element.x >= selectionArray[0] && element.x <= selectionArray[1]) {
+      const selectionMax =
+        selectionArray[0] <= selectionArray[1]
+          ? selectionArray[1]
+          : selectionArray[0];
+      const selectionMin =
+        selectionArray[0] <= selectionArray[1]
+          ? selectionArray[0]
+          : selectionArray[1];
+
+      if (selectionMin <= element.x0 && element.x <= selectionMax) {
         element.checked = true;
       } else {
         element.checked = false;
@@ -55,7 +64,7 @@ class App extends Component {
           data={data}
           onChange={this.handleSliderChange}
           selection={sliderSelection}
-          width={window.outerWidth}
+          width={400}
           padding={50}
           barPadding={0}
           selectedColor={blueBayoux}

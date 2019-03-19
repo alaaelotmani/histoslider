@@ -15,7 +15,10 @@ export const HistoSliderWrapper = styled.div({
 });
 
 export const HistoSliderContainer = styled.div({
-  backgroundColor: white
+  backgroundColor: white,
+  position: "absolute",
+  width: "400px",
+  heigth: "640px"
 });
 
 export const CheckboxLine = styled.div({
