@@ -1,28 +1,57 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+import {bool, func, number, string, object, shape, aeeayOf, arrayOf} from "prop-types";
 import { max, min } from "d3-array";
 import { scaleLinear as linear } from "d3-scale";
 
 import Histogram from "./Histogram";
-import Slider from "./Slider";
+import Slider, {sliderPropTypes} from "./Slider";
 
 const SLIDER_HEIGHT = 30;
 
-class Histoslider extends Component {
-  constructor() {
-    super();
+export default class Histoslider extends Component {
+  static propTypes = {
+    ...sliderPropTypes,
+    onChange: func.isRequired,
+    selectedColor: string,
+    unselectedColor: string,
+    selection: arrayOf(number),
+    barStyle: object,
+    barBorderRadius: number,
+    barPadding: number,
+    histogramStyle: object,
+    showOnDrag: bool,
+    style: object,
+    disableHistogram: bool
+  };
+
+  static defaultProps = {
+    selectedColor: "#0074D9",
+    unselectedColor: "#DDDDDD",
+    showOnDrag: false,
+    width: 400,
+    height: 200,
+    barBorderRadius: 2,
+    barPadding: 3,
+    padding: 20,
+    sliderHeight: 25,
+    handleLabelFormat: "0.3P"
+  };
+
+  constructor(props) {
+    super(props);
+
     this.state = {
       dragging: false
     };
   }
 
   dragChange = dragging => {
-    // TODO - debounce
     this.setState({ dragging });
   };
 
   onChange = selection => {
     const { data, onChange } = this.props;
+
     const sortedData = data.sort((a, b) => +a.x0 - +b.x0);
     const extent = [
       min(sortedData, ({ x0 }) => +x0),
@@ -32,7 +61,9 @@ class Histoslider extends Component {
   };
 
   reset = () => {
-    this.props.onChange(null);
+    const {onChange} = this.props;
+
+    onChange(null);
   };
 
   render() {
@@ -42,9 +73,11 @@ class Histoslider extends Component {
       width,
       height,
       padding,
+      selection,
       sliderHeight,
       disableHistogram
     } = this.props;
+    const {dragging} = this.state;
 
     const innerHeight = height - padding * 2;
     const innerWidth = width - padding * 2;
@@ -59,10 +92,10 @@ class Histoslider extends Component {
     const scale = linear().domain(extent).range([0, innerWidth]);
     scale.clamp(true);
 
-    const selection = this.props.selection || extent;
+    const selections = selection || extent;
 
     const overrides = {
-      selection,
+      selection: selections,
       data: sortedData,
       scale,
       max: maxValue,
@@ -70,7 +103,7 @@ class Histoslider extends Component {
       onChange: this.onChange,
       reset: this.reset,
       width: innerWidth,
-      dragging: this.state.dragging
+      dragging: dragging
     };
 
     return (
@@ -98,43 +131,3 @@ class Histoslider extends Component {
     );
   }
 }
-
-Histoslider.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      x0: PropTypes.number,
-      x: PropTypes.number,
-      y: PropTypes.number
-    })
-  ).isRequired,
-  onChange: PropTypes.func.isRequired,
-  selectedColor: PropTypes.string,
-  unselectedColor: PropTypes.string,
-  width: PropTypes.number,
-  height: PropTypes.number,
-  selection: PropTypes.arrayOf(PropTypes.number),
-  barStyle: PropTypes.object,
-  barBorderRadius: PropTypes.number,
-  barPadding: PropTypes.number,
-  histogramStyle: PropTypes.object,
-  sliderStyle: PropTypes.object,
-  showOnDrag: PropTypes.bool,
-  style: PropTypes.object,
-  handleLabelFormat: PropTypes.string,
-  disableHistogram: PropTypes.bool
-};
-
-Histoslider.defaultProps = {
-  selectedColor: "#0074D9",
-  unselectedColor: "#DDDDDD",
-  showOnDrag: false,
-  width: 400,
-  height: 200,
-  barBorderRadius: 2,
-  barPadding: 3,
-  padding: 20,
-  sliderHeight: 25,
-  handleLabelFormat: "0.3P"
-};
-
-export default Histoslider;
